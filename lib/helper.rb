@@ -1,7 +1,7 @@
 class LibHelper
 
   def version
-   '0.2'
+   '0.3'
   end
 
   def banner

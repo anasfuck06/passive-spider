@@ -63,7 +63,7 @@ class Bing
   end
 
   def get_keywords
-    ModuleHelper.keywords.each do |keyword|
+    ModuleHelper.page_keywords.each do |keyword|
       results = request( api_url( "site:#{@target_domain} #{keyword}", 0 ) )
 
       unless results.empty?

@@ -4,16 +4,17 @@ class ModuleHelper
     10
   end
 
+  # Original list from FuzzDB. 
   def self.file_extentions
-    %w(pdf log txt db dat doc docx csv xls xlsx xsd bak back backup zip tar tar.gz cfg conf config pwd sql ini inc old passwd xml mdb)
+    File.open('data/file_extentions.txt').read.split("\n")
   end
 
-  def self.keywords
-    %w(admin login user username password error)
+  def self.page_keywords
+    File.open('data/page_keywords.txt').read.split("\n")
   end
 
   def self.url_keywords
-    %w(admin login phpmyadmin readme phpinfo config)
+    File.open('data/url_keywords.txt').read.split("\n")
   end
 
   def self.domain_to_ip( domain )
