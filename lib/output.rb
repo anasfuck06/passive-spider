@@ -46,7 +46,7 @@ class Output
       rows << [index,file,extention]
     end
 
-    Terminal::Table.new :title => "Files - #{@files.size}", :headings => ['Index', 'File', 'Extention'], :rows => rows
+    Terminal::Table.new :title => "Files - #{@files.size}", :headings => ['Index', 'File', 'Extension'], :rows => rows
   end
 
   def parsed_ip_neighbours
