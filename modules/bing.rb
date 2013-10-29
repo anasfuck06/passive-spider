@@ -38,7 +38,7 @@ class Bing
 
       unless results.empty?
         results.each do |result|
-          ModuleHelper.output.files << result['Url']
+          ModuleHelper.output.files[result['Url']] = extention
           @result_urls << result['Url']
         end
       end
@@ -49,11 +49,11 @@ class Bing
 
   def get_url_keywords
     ModuleHelper.url_keywords.each do |keyword|
-      results = request( api_url( "site:#{@target_domain} -instreamset:(url):groups #{keyword}", 0 ) )
+      results = request( api_url( "site:#{@target_domain} instreamset:(url):#{keyword}", 0 ) )
 
       unless results.empty?
         results.each do |result|
-          ModuleHelper.output.url_keywords << result['Url']
+          ModuleHelper.output.url_keywords[result['Url']] = keyword
           @result_urls << result['Url']
         end
       end

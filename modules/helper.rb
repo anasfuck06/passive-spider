@@ -18,7 +18,7 @@ class ModuleHelper
   end
 
   def self.domain_to_ip( domain )
-    IPSocket::getaddress( domain )
+    IPSocket::getaddress( domain ) rescue ''
   end
 
   def self.output

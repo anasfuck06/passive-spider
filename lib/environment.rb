@@ -26,6 +26,7 @@ class Environment
       require 'typhoeus'
       require 'json'
       require 'public_suffix'
+      require 'terminal-table'
     rescue => e
       puts '[ERROR] Missing gem/s. Try: gem install bundler && bundle install'
       puts e

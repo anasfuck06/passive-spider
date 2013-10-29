@@ -4,65 +4,90 @@ class Output
 
   def initialize
     @urls          = []
-    @files         = []
+    @files         = {}
     @ip_neighbours = []
     @subdomains    = {}
     @keywords      = {}
-    @url_keywords  = []
+    @url_keywords  = {}
     @query_count   = 0
   end
 
   def stdout
-    puts "[+] URLs: #{parsed_urls.size}"
-    puts
     puts parsed_urls
-    puts
-    puts "[+] Files: #{parsed_files.size}"
     puts
     puts parsed_files
     puts
-    puts "[+] IP Neighbours: #{parsed_ip_neighbours.size}"
-    puts
     puts parsed_ip_neighbours
     puts
-    puts "[+] Subdomains: #{subdomains.size}"
+    puts parsed_subdomains
     puts
-    
-    subdomains.each_pair do |domain, ip|
-      puts "#{domain} #{ip}"
-    end
-
+    puts parsed_url_keywords
     puts
-    puts "[+] Interesting URL Keywords: #{url_keywords.size}"
-    puts
-    puts url_keywords
-    puts
-    puts "[+] Interesting Keywords: #{keywords.size}"
-
-    keywords.each_pair do |url, data|
-      puts
-      data.each_pair do |keyword, description|
-        puts "Keyword: #{keyword}" 
-        puts "URL: #{url}"
-        puts "Description: #{description}"
-      end
-    end
-
+    puts parsed_keywords
     puts
     puts "[+] Number of API queries made: #{@query_count}"
     puts
   end
 
   def parsed_urls
-    @urls.uniq
+    rows = []
+
+    @urls.uniq.each_with_index do |url,index|
+      rows << [index,url]
+    end
+
+    Terminal::Table.new :title => "URLs - #{@urls.uniq.size}", :headings => ['Index', 'URL'], :rows => rows
   end
 
   def parsed_files
-    @files.uniq
+    rows = []
+
+    @files.each_with_index do |(file,extention),index|
+      rows << [index,file,extention]
+    end
+
+    Terminal::Table.new :title => "Files - #{@files.size}", :headings => ['Index', 'File', 'Extention'], :rows => rows
   end
 
   def parsed_ip_neighbours
-    @ip_neighbours.uniq
+    rows = []
+
+    @ip_neighbours.uniq.each_with_index do |domain,index|
+      rows << [index,domain]
+    end
+
+     Terminal::Table.new :title => "IP Neighbours - #{@ip_neighbours.uniq.size}", :headings => ['Index', 'Domain'], :rows => rows
   end
 
+  def parsed_subdomains
+    rows = []
+    
+    @subdomains.each_with_index do |(domain, ip),index|
+      rows << [index, domain, ip]
+    end
+
+    Terminal::Table.new :title => "Subdomains - #{@subdomains.size}", :headings => ['Index', 'Domain', 'IP'], :rows => rows
+  end
+
+  def parsed_url_keywords
+    rows = []
+
+    @url_keywords.each_with_index do |(url, keyword),index|
+      rows << [index, url, keyword]
+    end
+
+    Terminal::Table.new :title => "URL Keywords - #{@url_keywords.size}", :headings => ['Index', 'URL', 'Keyword'], :rows => rows
+  end
+
+  def parsed_keywords
+    rows = []
+
+    @keywords.each_with_index do |(url, data),index|
+      data.each_pair do |keyword, description|
+        rows << [index,url,keyword,description]
+      end
+    end
+
+    Terminal::Table.new :title => "Page Keywords - #{@keywords.size}", :headings => ['Index', 'URL', 'Keyword', 'Description'], :rows => rows
+  end
 end
