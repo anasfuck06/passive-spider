@@ -24,4 +24,5 @@ server-info
 server-status
 setup
 web-console
+WebService
 wsdl
