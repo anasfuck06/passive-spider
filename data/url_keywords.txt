@@ -26,3 +26,7 @@ setup
 web-console
 WebService
 wsdl
+redirect
+url
+continue
+return

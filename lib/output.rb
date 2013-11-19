@@ -23,7 +23,17 @@ class Output
     puts
     puts parsed_url_keywords
     puts
-    puts parsed_keywords
+
+     @keywords.each_with_index do |(url, data),index|
+      data.each_pair do |keyword, description|
+        puts "Index: #{index}"
+        puts "URL: #{url}"
+        puts "Keyword: #{keyword}"
+        puts "Description: #{description}" 
+        puts
+      end
+    end
+
     puts
     puts "[+] Number of API queries made: #{@query_count}"
     puts
