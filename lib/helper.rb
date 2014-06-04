@@ -55,4 +55,11 @@ class LibHelper
   def domain_exists?(domain)
     IPSocket.getaddress(domain) rescue false
   end
+
+  def self.all_urls
+    ModuleHelper.output.urls + \
+    ModuleHelper.output.files.map { |url, _file| url } + \
+    ModuleHelper.output.keywords.map { |url, keyword| url } + \
+    ModuleHelper.output.url_keywords.map { |url, keyword| url }
+  end
 end
