@@ -17,7 +17,7 @@ Use it, modify it and distribute it without warranty or implied warranty.
 
 Place your search engine API keys in the api_keys.config file. Each search engine API has different usage limits and pricing, refer to them for this information. Do not share your keys.
 
-Tested on Mac OS X with Ruby 1.9.3.
+Tested on Mac OS X with Ruby 1.9.3 & Ruby 2.1.2.
 
 #### ARGUMENTS
 
