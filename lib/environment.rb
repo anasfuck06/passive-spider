@@ -1,9 +1,8 @@
 class Environment
-
   def self.require_all
-  	require_libs
-  	require_pspider
-  	require_gems
+    require_libs
+    require_pspider
+    require_gems
   end
 
   def self.require_libs
@@ -17,6 +16,7 @@ class Environment
     require_relative 'helper'
     require_relative 'config'
     require_relative 'output'
+    require_relative 'export'
     require_relative '../modules/helper'
     require_relative '../modules/bing'
   end
@@ -33,5 +33,4 @@ class Environment
       exit
     end
   end
-
 end

@@ -1,4 +1,4 @@
-passive-spider
+Passive Spider
 ==============
 
 Passive Spider uses search engines (currently only Bing supported) to find interesting information about a target domain.
@@ -29,6 +29,8 @@ Tested on Mac OS X with Ruby 1.9.3.
     --neighbours        Find other domains that are on the same IP address.
     --urlkeywords       Find page URLs that have 'interesting' keywords in them.
     --keywords          Find page content that have 'interesting' keywords in them.
+    --export   || -e    Request URLs through proxy.
+                        Specify a proxy (type://ip:port) or use defaults. Default: http://127.0.0.1:8080
     --help     || -h    This output.
 
 #### USAGE
