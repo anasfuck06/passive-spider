@@ -12,7 +12,7 @@ class Bing
     all_pages
     all_files
     ip_neighbours
-    url_keywords
+    # url_keywords
     keywords
   end
 
