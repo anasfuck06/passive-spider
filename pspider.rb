@@ -93,7 +93,7 @@ bing.all if all
 bing.all_pages if all_pages
 bing.all_files if all_files
 bing.ip_neighbours if neighbours
-bing.url_keywords if url_keywords
+# bing.url_keywords if url_keywords
 bing.keywords if keywords
 
 # output output mofo
