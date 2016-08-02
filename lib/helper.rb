@@ -10,7 +10,6 @@ class LibHelper
     puts '[+]-----------------------------[+]'
     puts
     puts 'Shhhhh... by Ryan \'ethicalhack3r\' Dewhurst'
-    puts 'Part of The RandomStorm Open Source Initiative'
     puts
   end
 
