@@ -1,30 +1,27 @@
 class Bing
   def initialize(target_domain, pages)
-    @api_url       = 'https://api.datamarket.azure.com/Bing/Search/Web?'
+    @api_url       = 'https://api.cognitive.microsoft.com/bing/v7.0/search'
     @api_key       = SpiderConfig.api_key[:bing]
-    @authorization = Base64.encode64("#{@api_key}:#{@api_key}").gsub("\n", '')
-    @pages         = pages || ModuleHelper.default_pages
+    #@pages         = pages || ModuleHelper.default_pages
     @target_domain = target_domain
     @result_urls   = []
   end
 
   def all
-    all_pages
-    all_files
-    ip_neighbours
-    # url_keywords
-    keywords
+    #all_pages
+    #all_files
+    #ip_neighbours
+    url_keywords
+    #keywords
   end
 
   def all_pages
-    @pages.times do |page|
-      results = request(api_url("site:#{@target_domain}", page))
+    results = request(api_url("site:#{@target_domain}"))
 
-      unless results.empty?
-        results.each do |result|
-          ModuleHelper.output.urls << result['Url']
-          @result_urls << result['Url']
-        end
+    unless results.empty?
+      results['webPages']['value'].each do |result|
+        ModuleHelper.output.urls << result['url']
+        @result_urls << result['url']
       end
     end
 
@@ -33,12 +30,12 @@ class Bing
 
   def all_files
     ModuleHelper.file_extentions.each do |extention|
-      results = request(api_url("site:#{@target_domain} ext:#{extention}", 0))
+      results = request(api_url("site:#{@target_domain} ext:#{extention}"))
 
       unless results.empty?
-        results.each do |result|
-          ModuleHelper.output.files[result['Url']] = extention
-          @result_urls << result['Url']
+        results['webPages']['value'].each do |result|
+          ModuleHelper.output.files[result['url']] = extention
+          @result_urls << result['url']
         end
       end
     end
@@ -48,12 +45,24 @@ class Bing
 
   def url_keywords
     ModuleHelper.url_keywords.each do |keyword|
-      results = request(api_url("site:#{@target_domain} instreamset:(url):#{keyword}", 0))
+      results = request(api_url("site:#{@target_domain} instreamset:(url):#{keyword}"))
 
-      unless results.empty?
-        results.each do |result|
-          ModuleHelper.output.url_keywords[result['Url']] = keyword
-          @result_urls << result['Url']
+      p results['webPages']['value']
+
+      unless results.empty? || results['webPages'].nil? || results['webPages']['value'].nil?
+        results['webPages']['value'].each do |result|
+          unless result['url'].nil?
+            p result['url']
+            domain        = ModuleHelper.parse_domain(@target_domain).domain
+            result_domain = ModuleHelper.parse_domain(result['url']).domain
+
+            p @target_domain, domain, result_domain
+
+            if ModuleHelper.same_domain?(domain, result_domain)
+              ModuleHelper.output.url_keywords[result['url']] = keyword
+              @result_urls << result['url']
+            end
+          end
         end
       end
     end
@@ -63,7 +72,7 @@ class Bing
 
   def keywords
     ModuleHelper.page_keywords.each do |keyword|
-      results = request(api_url("site:#{@target_domain} #{keyword}", 0))
+      results = request(api_url("site:#{@target_domain} #{keyword}"))
 
       unless results.empty?
         results.each do |result|
@@ -80,16 +89,14 @@ class Bing
     ip     = ModuleHelper.domain_to_ip(@target_domain)
     domain = PublicSuffix.parse(@target_domain)
 
-    @pages.times do
-      results = request( api_url("ip:#{ip}", 0) )
+    results = request( api_url("ip:#{ip}") )
 
-      unless results.empty?
-        results.each do |result|
-          result_domain = ModuleHelper.parse_domain(result['Url']) rescue next
+    unless results.empty?
+      results['webPages']['value'].each do |result|
+        result_domain = ModuleHelper.parse_domain(result['url']) rescue next
 
-          unless ModuleHelper.same_domain?(domain, result_domain)
-            ModuleHelper.output.ip_neighbours << result_domain.to_s
-          end
+        unless ModuleHelper.same_domain?(domain, result_domain)
+          ModuleHelper.output.ip_neighbours << result_domain.to_s
         end
       end
     end
@@ -112,8 +119,9 @@ class Bing
   end
 
   def request(url)
+    sleep 0.5 # Bing API has strict rate limiting
     ModuleHelper.output.query_count += 1
-    response = Typhoeus.get(url, headers: { 'Authorization' => "Basic #{@authorization}" })
+    response = Typhoeus.get(url, headers: { 'Ocp-Apim-Subscription-Key' => @api_key })
 
     if response.body =~ /The authorization type you provided is not supported/
       puts '[ERROR] Did you put your API key in the api_keys.config file? or is it incorrect?'
@@ -125,11 +133,11 @@ class Bing
       puts '[ERROR] You have run out of API queries.'
       exit
     else
-      JSON.parse(response.body)['d']['results']
+      JSON.parse(response.body)
     end
   end
 
-  def api_url(query, page)
-    @api_url + URI.encode("Query='#{query}'&$format=json&$skip=#{page}")
+  def api_url(query)
+    @api_url + '?q=' + URI.escape(query) + '&responseFilter=Webpages&safeSearch=Off'
   end
 end
