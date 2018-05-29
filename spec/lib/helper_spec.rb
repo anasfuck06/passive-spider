@@ -15,11 +15,11 @@ describe '.LibHelper' do
 
   describe '#domain_exists?' do
   	it 'returns true if the domain exists' do
-  	  @helper.domain_exists?( 'dewhurstsecurity.com' ).should be_true
+  	  @helper.domain_exists?( 'dewhurstsecurity.com' ).should_not be_falsey
     end
 
     it 'returns false if the domain does not exists' do
-  	  @helper.domain_exists?( "dewhurstsecurity#{(0...8).map{(65+rand(26)).chr}.join.downcase}.com" ).should be_false
+  	  @helper.domain_exists?( "dewhurstsecurity#{(0...8).map{(65+rand(26)).chr}.join.downcase}.com" ).should be_falsey
     end
   end
 

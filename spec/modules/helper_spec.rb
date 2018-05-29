@@ -4,33 +4,33 @@ describe '.ModuleHelper' do
 
   describe '#same_domain?' do
   	it 'returns true if both domains are the same' do
-      ModuleHelper.same_domain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('example.com') ).should be_true
+      ModuleHelper.same_domain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('example.com') ).should be_truthy
   	end
 
   	it 'returns false if both domains are different' do
-      ModuleHelper.same_domain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('example2.com') ).should be_false
+      ModuleHelper.same_domain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('example2.com') ).should be_falsey
     end
   end
 
   describe '#subdomain?' do
     it 'returns true if the domain is a subdomain' do
-      ModuleHelper.subdomain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('subdomain.example.com') ).should be_true
+      ModuleHelper.subdomain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('subdomain.example.com') ).should be_truthy
     end
 
     it 'returns false if the domain does not contain a subdomain' do
-      ModuleHelper.subdomain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('example.com') ).should be_false
+      ModuleHelper.subdomain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('example.com') ).should be_falsey
     end
 
     it 'returns false if the domains do not match' do
-      ModuleHelper.subdomain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('example2.com') ).should be_false
+      ModuleHelper.subdomain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('example2.com') ).should be_falsey
     end
 
     it 'returns false if the domains do not match and the domain is a subdomain' do
-      ModuleHelper.subdomain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('subdomain.example2.com') ).should be_false
+      ModuleHelper.subdomain?( PublicSuffix.parse('example.com'), PublicSuffix.parse('subdomain.example2.com') ).should be_falsey
     end
 
     it 'returns false if the subdomains are the same' do
-      ModuleHelper.subdomain?( PublicSuffix.parse('subdomain.example.com'), PublicSuffix.parse('subdomain.example.com') ).should be_false
+      ModuleHelper.subdomain?( PublicSuffix.parse('subdomain.example.com'), PublicSuffix.parse('subdomain.example.com') ).should be_falsey
     end
   end
 
