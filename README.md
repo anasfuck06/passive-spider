@@ -9,7 +9,7 @@ Use it, modify it and distribute it without warranty or implied warranty.
 
 #### INSTALL
 
-```git clone https://github.com/RandomStorm/passive-spider.git```
+```git clone https://github.com/ethicalhack3r/passive-spider.git```
 
 ```cd passive-spider```
 
